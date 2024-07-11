@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { api } from '@/convex/_generated/api';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 import { useMutation } from 'convex/react';
+import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { toast } from 'sonner';
@@ -24,7 +25,7 @@ const CreateTeam = () => {
             createTeam({
                 teamName: teamName,
                 createdBy: user?.email,
-                members: members
+                members: members,
             }).then(resp => {
                 console.log(resp);
                 if (resp) {
@@ -48,6 +49,10 @@ const CreateTeam = () => {
         setMembers(updatedMembers);
     }
 
+    const removeMember = (index: number) => {
+        setMembers(members.filter((_, i) => i !== index));
+    }
+
     return (
         <div className='md:p-16 p-4'>
             <Logo className=' md:text-5xl text-3xl' />
@@ -67,12 +72,13 @@ const CreateTeam = () => {
                 {
                     members && members.map((item,index) => (
 
-                        <div className='mt-4 md:w-[40%] w-[80%] min-w-[300px]' key={index}>
+                        <div className='mt-4 flex gap-2 items-center md:w-[40%] w-[80%] min-w-[300px]' key={index}>
                             <Input placeholder='Email ID'
                                 className='mt-3'
                                 onChange={(e) => updateMember(e,index)}
                                 value={item?.email}
                             />
+                            <Trash2 className='text-red-400 mt-2 hover:text-red-500'  onClick={() => {removeMember(index)}} />
                         </div>
                     ))
                 }

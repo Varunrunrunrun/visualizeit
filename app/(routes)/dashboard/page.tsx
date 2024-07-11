@@ -40,12 +40,8 @@ const Dashboard = () => {
     }
 
   return (
-    <div className='p-8'>
-        {/* <Header /> */}
-        {
-          fileList_ && fileList_.length > 0 ? 
-          <FileList /> : <NoTableData />
-        }
+    <div className='md:p-8 p-2'>
+        <FileList />
     </div>
   )
 }

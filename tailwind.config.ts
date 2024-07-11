@@ -74,6 +74,7 @@ const config = {
       },
       height:{
         'screen-64': 'calc(100vh - 64px)',
+        'screen-49': 'calc(100vh - 49px)',
         'screen-57': 'calc(100vh - 57px)',
       }
     },

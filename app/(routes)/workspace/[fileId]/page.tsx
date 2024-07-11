@@ -12,7 +12,6 @@ const Workspace = ({params}:any) => {
     const convex=useConvex();
     const [fileData,setFileData]=useState<FILE|any>();
     useEffect(()=>{
-     console.log("FILEID",params.fileId)
      params.fileId&&getFileData();
     },[])
  
@@ -23,8 +22,8 @@ const Workspace = ({params}:any) => {
   return (
     <div>
       <WorkspaceHeader onSave={()=>setTriggerSave(!triggerSave)} fileName = {fileData?.fileName} />
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        <div className=" h-screen-57">
+      <div className="grid grid-cols-1 lg:grid-cols-2 md:overflow-hidden">
+          <div className=" h-screen-57 overflow-y-auto overflow-x-hidden">
         <Editor onSaveTrigger={triggerSave}
             fileId={params.fileId}
             fileData={fileData}

@@ -1,3 +1,4 @@
+"use client";
 import { ChevronDown, LayoutGrid, LogOut, Settings, Users } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -34,6 +35,12 @@ function SideNavTopSection({ user, setActiveTeamInfo }: any) {
     },
     {
       id: 2,
+      name: "Join a Team",
+      path: "/teams/join",
+      icon: Users,
+    },
+    {
+      id: 3,
       name: "Settings",
       path: "",
       icon: Settings,
@@ -66,24 +73,18 @@ function SideNavTopSection({ user, setActiveTeamInfo }: any) {
   };
   return (
     <div>
+                  <Logo className="text-2xl mb-4" />
+
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger className="w-full">
           <div
             className="flex items-center gap-3
-      hover:bg-slate-200 p-3 rounded-lg
-      cursor-pointer
+      hover:bg-slate-300 bg-slate-200 p-3 rounded-lg
+      cursor-pointer w-full justify-between
       "
           >
-            <Logo className="text-2xl" />
-            <h2
-              className="flex gap-2 
-                    items-center
-      font-bold text-[17px]
-      "
-            >
-              <span className="max-w-[130px] overflow-hidden text-ellipsis whitespace-nowrap">{activeTeam?.teamName}</span>
-              <ChevronDown />
-            </h2>
+              <span className="font-bold text-[17px] max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{activeTeam?.teamName}</span>
+              <ChevronDown className="font-bold text-[17px]" />
           </div>
         </PopoverTrigger>
         <PopoverContent className="ml-7 p-4">
@@ -149,14 +150,14 @@ function SideNavTopSection({ user, setActiveTeamInfo }: any) {
       </Popover>
 
       {/* All File Button  */}
-      <Button
+      {/* <Button
         variant="outline"
         className="w-full justify-start
           gap-2 font-bold mt-8 "
       >
         <LayoutGrid className="h-5 w-5" />
         All Files
-      </Button>
+      </Button> */}
     </div>
   );
 }

@@ -6,9 +6,10 @@ import { Sidebar } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import SideNav from './_components/SideNav';
-import { FileListContext } from '@/app/_context/FilesListContext';
+import { ActiveTeamContext, FileListContext } from '@/app/_context/FilesListContext';
 import LeftDrawer from './_components/LeftDrawer';
 import Loader from './_components/Loader';
+import FileList from './_components/FileList';
 
 const DashboardLayout = (
     {
@@ -18,6 +19,8 @@ const DashboardLayout = (
     const convex = useConvex();
     const { user }: any = useKindeBrowserClient();
     const [fileList_, setFileList_] = useState();
+    const [activeTeam_, setActiveTeam_] = useState();
+
     const [loading,setLoading] = useState(true);
     const router = useRouter();
     useEffect(() => {
@@ -43,6 +46,7 @@ const DashboardLayout = (
     return (
         <div>
             {loading && <Loader />}
+            <ActiveTeamContext.Provider value={{activeTeam_,setActiveTeam_}}>
             <FileListContext.Provider value={{fileList_,setFileList_}}>
             <div className='lg:hidden flex w-full bg-slate-100 mb-2'>
                 <LeftDrawer />
@@ -52,11 +56,12 @@ const DashboardLayout = (
                 <SideNav />
             </div>
 
-            <div className='col-span-4 lg:ml-72 w-full lg:w-auto'>
+            <div className='col-span-4 lg:ml-72 w-full lg:w-auto md:p-8 p-2'>
                 {children}
             </div>
             </div>
             </FileListContext.Provider>
+            </ActiveTeamContext.Provider>
         </div>
     )
 }

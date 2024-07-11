@@ -1,5 +1,4 @@
 import React from 'react'
-import VisualizeItAnim from './VisualizeItAnim'
 import Image from 'next/image'
 
 const Hero = () => {

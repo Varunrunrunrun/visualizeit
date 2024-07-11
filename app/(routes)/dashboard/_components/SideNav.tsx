@@ -6,7 +6,7 @@ import SideNavBottom from './SideNavBottom';
 import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
-import { FileListContext } from '@/app/_context/FilesListContext';
+import { ActiveTeamContext, FileListContext } from '@/app/_context/FilesListContext';
 
 const SideNav = () => {
     const {user}:any=useKindeBrowserClient();
@@ -15,8 +15,12 @@ const SideNav = () => {
     const convex=useConvex();
     const [totalFiles,setTotalFiles]=useState<Number>();
     const {fileList_,setFileList_}=useContext(FileListContext);
+    const {activeTeam_,setActiveTeam_}=useContext(ActiveTeamContext);
+
     useEffect(()=>{
       activeTeam&&getFiles();
+      activeTeam && setActiveTeam_(activeTeam)
+
     },[activeTeam])
     const onFileCreate=(fileName:string)=>{
       console.log(fileName)
@@ -61,6 +65,7 @@ const SideNav = () => {
           <SideNavBottom
           totalFiles={totalFiles}
           onFileCreate={onFileCreate}
+          activeTeam={activeTeam}
           />
          </div>
         </div>

@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
-function PricingDialog() {
+const PricingDialog = () => {
   return (
     <DialogContent className="max-w-4xl md:w-4xl w-[90%]  max-h-[90%] h-fit">
       <DialogHeader>
