@@ -20,10 +20,37 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export interface HeaderType {
   searchFn: (value: string) => void; // Updated type definition
 }
+
+// utils/colorUtils.js
+export const colors = [
+  "bg-red-500",
+  "bg-blue-500",
+  "bg-green-500",
+  "bg-yellow-500",
+  "bg-purple-500",
+  "bg-pink-500",
+  "bg-indigo-500",
+];
+
+export const isDarkColor = (color: any) => {
+  const darkColors = [
+    "bg-red-500",
+    "bg-blue-500",
+    "bg-purple-500",
+    "bg-indigo-500",
+  ];
+  return darkColors.includes(color);
+};
+
+export const getRandomColor = () => {
+  const randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
+};
 
 const Header = ({ searchFn }: HeaderType) => {
   const route = useRouter();
@@ -36,40 +63,61 @@ const Header = ({ searchFn }: HeaderType) => {
 
   const [members, setMembers] = useState<Member[]>([]);
   const addMemberFn = () => {
-    setMembers([...members,{email:''}]);
-};
-
-useEffect(() => {
-activeTeam_ && setMembers(activeTeam_?.members);
-},[activeTeam_])
-console.log(members);
-
-
-const updateMember = (e:any,index:number) => {
-  const updatedMembers = [...members];
-  updatedMembers[index] = {
-      ...updatedMembers[index],
-      email: e.target.value
+    if (activeTeam_.createdBy === user?.email) {
+      setMembers([...members, { email: "" }]);
+    } else {
+      toast("Only Admin can add members");
+    }
   };
-  setMembers(updatedMembers);
-}
 
-const removeMember = (index: number) => {
-  setMembers(members.filter((_, i) => i !== index));
-}
-const addMembersApi=useMutation(api.teams.addMembers)
-const addFormFn = () => {
-  console.log('activeTeam_', activeTeam_);
-  console.log('members', members);
+  useEffect(() => {
+    activeTeam_ && setMembers(activeTeam_?.members);
+  }, [activeTeam_]);
+  console.log(members);
+
+  const updateMember = (e: any, index: number) => {
+    if (activeTeam_.createdBy === user?.email) {
+      const updatedMembers = [...members];
+      updatedMembers[index] = {
+        ...updatedMembers[index],
+        email: e.target.value,
+      };
+      setMembers(updatedMembers);
+    } else {
+      toast("Only Admin can edit member details");
+    }
+  };
+
+  const removeMember = (index: number) => {
+    if (activeTeam_.createdBy === user?.email) {
+      setMembers(members.filter((_, i) => i !== index));
+    } else {
+      toast("Only Admin can remove members");
+    }
+  };
+  const addMembersApi = useMutation(api.teams.addMembers);
+  const addFormFn = () => {
+    console.log("activeTeam_", activeTeam_);
+    console.log("members", members);
     addMembersApi({
       teamId: activeTeam_.teamId,
       members: members,
     })
-    .then(resp => {
-      window.location.reload();
-    })
-    .catch(err => console.error('Mutation error:', err));
-}
+      .then((resp) => {
+        window.location.reload();
+      })
+      .catch((err) => console.error("Mutation error:", err));
+  };
+
+  //avatar color
+  const [bgColor, setBgColor] = useState("");
+  const [textColor, setTextColor] = useState("");
+
+  useEffect(() => {
+    const randomColor = getRandomColor();
+    setBgColor(randomColor);
+    setTextColor(isDarkColor(randomColor) ? "text-white" : "text-black");
+  }, []);
   return (
     <div className="flex flex-col sm:flex-row justify-end w-full gap-2 items-center">
       <div className="flex gap-2 items-center border rounded-md p-1 w-full sm:w-auto">
@@ -82,8 +130,8 @@ const addFormFn = () => {
         />
       </div>
       <div className="flex gap-2 items-center w-full sm:w-auto justify-end">
-        <div>
-          {user && user.picture && (
+        {user?.picture.includes("lh3.googleusercontent.com") ? (
+          <div>
             <Image
               src={user?.picture}
               alt="user"
@@ -91,35 +139,56 @@ const addFormFn = () => {
               height={30}
               className="rounded-full"
             />
-          )}
-        </div>
+          </div>
+        ) : (
+          <div>
+            {user && user?.email && (
+              <div
+                className={`w-[30px] h-[30px] rounded-full flex items-center justify-center ${bgColor} ${textColor}`}
+              >
+                {user?.email.charAt(0).toUpperCase()}
+              </div>
+            )}
+          </div>
+        )}
         <Dialog>
           <DialogTrigger>
-            <div className=" text-sm h-8 flex gap-2 justify-center items-center text-white hover:bg-blue-700 bg-blue-400 rounded-md px-2 py-2" onClick={() => {setMembers(activeTeam_?.members)}}>
-              <Users className="h-4 w-4" />  Members
+            <div
+              className=" text-sm h-8 flex gap-2 justify-center items-center text-white hover:bg-blue-700 bg-blue-400 rounded-md px-2 py-2"
+              onClick={() => {
+                setMembers(activeTeam_?.members);
+              }}
+            >
+              <Users className="h-4 w-4" /> Members
             </div>
           </DialogTrigger>
-          <DialogContent className="min-w-[300px] md:w-2/5 w-[90%] max-h-[80%] p-4">
+          <DialogContent className="min-w-[300px] md:w-2/5 w-[90%] max-h-[80%] md:p-4 p-2 rounded-sm">
             <DialogHeader className="w-fit ">
               <DialogTitle className="text-left w-full">Members</DialogTitle>
             </DialogHeader>
-              <div className="flex w-full justify-between items-center  min-w-[300px] px-4">
-                <span>Add Members (Add the email ID)</span>
-                <Button onClick={addMemberFn}>Add</Button>
-              </div>
-              <div className="max-h-[300px] overflow-auto  overflow-x-hidden px-4 pb-2">
-
+            <div className="flex w-full  items-center  min-w-[300px] md:px-4">
+              <h2>
+                <strong>Team Admin: </strong>
+                {activeTeam_?.createdBy}
+              </h2>
+            </div>
+            <div className="flex w-full justify-between items-center  min-w-[300px] md:px-4">
+              <span className="text-sm md:text-lg">Add Members (Add the email ID)</span>
+              <Button onClick={addMemberFn}>Add</Button>
+            </div>
+            <div className="max-h-[300px] overflow-auto  overflow-x-hidden md:px-4 pb-2">
               {members &&
                 members.map((item, index) => (
                   <div
                     className="mt-2 flex gap-2 items-center w-full min-w-[300px]"
                     key={index}
                   >
-                    <Input placeholder='Email ID'
-                                className='mt-3'
-                                onChange={(e) => updateMember(e,index)}
-                                value={item?.email}
-                            />
+                    <Input
+                      placeholder="Email ID"
+                      className="mt-3"
+                      onChange={(e) => updateMember(e, index)}
+                      value={item?.email}
+                    />
                     <Trash2
                       className="text-red-400 mt-2 hover:text-red-500"
                       onClick={() => {
@@ -128,15 +197,16 @@ const addFormFn = () => {
                     />
                   </div>
                 ))}
-              </div>
-              <div className="w-full flex justify-center">
+            </div>
+            <div className="w-full flex justify-center">
               <Button
                 className="bg-blue-400  md:mt-9 mt-6  w-[30%] min-w-[300px] hover:bg-blue-600"
                 onClick={() => addFormFn()}
+                disabled={activeTeam_?.createdBy !== user?.email}
               >
                 Add Members
               </Button>
-              </div>
+            </div>
             <DialogFooter>
               <DialogClose asChild />
             </DialogFooter>

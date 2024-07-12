@@ -82,3 +82,24 @@ export const searchFiles = query({
       return filteredFiles;
     },
   });
+
+  export const deleteFile = mutation({
+    args: { _id: v.id("files") },
+    handler: async (ctx, args) => {
+      const result = await ctx.db.delete(args._id);
+      return {status: 200, message: "Deleted Successfully"};
+    },
+  });
+
+  export const archiveUpdate = mutation({
+    args: { _id: v.id("files"), archive: v.boolean() },
+    handler: async (ctx, args) => {
+      const result = await ctx.db.patch(args._id,{archive: args.archive});
+      if(args.archive){
+          return {status: 200, message: "Archived Successfully"};
+      }
+      else{
+        return {status: 200, message: "Unarchived Successfully"};
+      }
+    },
+  });

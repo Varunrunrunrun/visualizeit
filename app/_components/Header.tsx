@@ -43,7 +43,7 @@ const Header = () => {
                 <div className="flex h-16 items-center justify-between">
                     <div className="md:flex md:items-center md:gap-12">
                         <a className=" text-black flex" href="#">
-                            <Logo className='' />
+                            <Logo className='text-2xl' />
                         </a>
                     </div>
 

@@ -29,7 +29,7 @@ const Dashboard = () => {
       if(!result?.length)
       {
           createUser({
-            name:user.given_name,
+            name:user.given_name ? user.given_name : "",
             email:user.email,
             image:user.picture
           }).then((resp)=>{

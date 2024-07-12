@@ -1,5 +1,6 @@
-import Logo from "@/app/_components/Logo";
+
 import React from "react";
+import Logo from "./Logo";
 
 const Loader = () => {
   return (
