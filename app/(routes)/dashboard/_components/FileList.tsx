@@ -69,7 +69,7 @@ function FileList() {
         _id: file?._id,
       }).then((resp) => {
         if (resp.status === 200) {
-          toast(resp.message);
+          toast.success(resp.message);
           getFiles();
         }
       });
@@ -86,7 +86,7 @@ function FileList() {
         lastUpdatedBy:user?.email,
       }).then((resp) => {
         if (resp.status === 200) {
-          toast(resp.message);
+          toast.success(resp.message);
           getFiles();
         }
       });

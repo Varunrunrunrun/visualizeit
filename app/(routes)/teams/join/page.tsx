@@ -24,6 +24,14 @@ const JoinTeam = () => {
     const { user }: any = useKindeBrowserClient();
     const router = useRouter();
     const joinTeamFn = () => {
+        if(teamId === ""){
+            toast.error("Team ID cannot be empty");
+            return;
+        }
+        if(password === ""){
+            toast.error("Password cannot be empty");
+            return;
+        }
         if(user && user?.email){
             joinTeam({
                 email: user?.email,
@@ -32,12 +40,17 @@ const JoinTeam = () => {
             }).then(resp => {
                 console.log(resp);
                 if(resp.status === 200){
-                    toast(resp?.message);
+                    toast.success(resp?.message);
                     router.push('/dashboard');
                 }
                 else{
-                    toast(resp.message);
+                    toast.error(resp.message);
                 }
+            })
+        }
+        else{
+            toast.error("Some error occurred.",{
+                description:"Please try after some time"
             })
         }
     }
@@ -68,7 +81,7 @@ const JoinTeam = () => {
                 </div>
                 
                 <Button className='bg-blue-400 md:mt-9 mt-6  w-[30%] min-w-[300px] hover:bg-blue-600'
-                    disabled={!(teamId && password && email)}
+                    // disabled={!(teamId && password && email)}
                     onClick={() => joinTeamFn()}
                 >Join Team</Button>
             </div>

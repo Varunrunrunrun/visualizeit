@@ -102,10 +102,10 @@ const Editor = ({onSaveTrigger,fileId,fileData,userRole}:{onSaveTrigger:any,file
             lastUpdatedBy:user?.email,
           }).then(resp=>{
             
-              toast('Document Updated!')
+              toast.success('Document Updated!')
             
           },(e)=>{
-            toast("Server Error!")
+            toast.error("Server Error!")
           })
         }).catch((error) => {
           console.log('Saving failed: ', error)

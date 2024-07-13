@@ -39,7 +39,7 @@ const CreateTeam = () => {
         console.log(resp);
         if (resp) {
           router.push("/dashboard");
-          toast("Team created successfully!");
+          toast.success("Team created successfully!");
         }
       });
     }
@@ -137,6 +137,8 @@ const CreateTeam = () => {
           Create Team
         </Button>
       </div>
+
+      <div className="mt-8 w-full text-center">Want to join an existing team? <a href="/teams/join" className="cursor-pointer font-semibold text-blue-400">Click here</a></div>
     </div>
   );
 };

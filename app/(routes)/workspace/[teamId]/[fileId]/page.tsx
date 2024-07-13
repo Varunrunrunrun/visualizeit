@@ -64,7 +64,7 @@ const Workspace = ({params}:any) => {
 
       // User is not part of the team
       toast.error('You are not part of the team.', {
-        description: 'Please contact the Team Admin to give access.'
+        description: 'Please contact the Team Admin to get access.'
       });
       router.push('/dashboard');
       return false;

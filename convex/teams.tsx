@@ -95,7 +95,7 @@ export const joinTeam = mutation({
         message: "Invalid Password",
       };
     } else {
-      const updatedMembers = [...team[0]?.members, { email: args.email }];
+      const updatedMembers = [...team[0]?.members, { email: args.email, role:'member' }];
       const updateResult = await ctx.db.patch(team[0]?._id, {
         members: updatedMembers,
       });

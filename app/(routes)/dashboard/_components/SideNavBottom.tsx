@@ -26,10 +26,10 @@ const SideNavBottom = ({ onFileCreate, totalFiles, activeTeam }: any) => {
       navigator.clipboard
         .writeText(activeTeam.password)
         .then(() => {
-          toast("Password copied to clipboard");
+          toast.success("Password copied to clipboard");
         })
         .catch((err) => {
-          toast("Could not copy password ");
+          toast.error("Could not copy password ");
         });
     }
   };
@@ -38,10 +38,10 @@ const SideNavBottom = ({ onFileCreate, totalFiles, activeTeam }: any) => {
       navigator.clipboard
         .writeText(activeTeam.teamId)
         .then(() => {
-          toast("Team ID copied to clipboard");
+          toast.success("Team ID copied to clipboard");
         })
         .catch((err) => {
-          toast("Could not copy Team ID ");
+          toast.error("Could not copy Team ID ");
         });
     }
   };

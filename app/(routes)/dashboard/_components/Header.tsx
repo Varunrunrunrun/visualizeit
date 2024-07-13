@@ -68,7 +68,7 @@ const Header = ({ searchFn }: HeaderType) => {
     if (activeTeam_.createdBy === user?.email) {
       setMembers([...members, { email: "", role: "member"}]);
     } else {
-      toast("Only Admin can add members");
+      toast.error("Only Admin can add members");
     }
   };
 
@@ -98,7 +98,7 @@ const Header = ({ searchFn }: HeaderType) => {
     if (activeTeam_.createdBy === user?.email) {
       setMembers(members.filter((_, i) => i !== index));
     } else {
-      toast("Only Admin can remove members");
+      toast.error("Only Admin can remove members");
     }
   };
   const addMembersApi = useMutation(api.teams.addMembers);
@@ -230,7 +230,7 @@ const Header = ({ searchFn }: HeaderType) => {
                 onClick={() => addFormFn()}
                 disabled={activeTeam_?.createdBy !== user?.email}
               >
-                Add Members
+                Save
               </Button>
             </div>
             <DialogFooter>
