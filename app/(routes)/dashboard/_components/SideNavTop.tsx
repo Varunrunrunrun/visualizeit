@@ -1,7 +1,7 @@
 "use client";
 import { ChevronDown, LayoutGrid, LogOut, Settings, Users } from "lucide-react";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -14,6 +14,7 @@ import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Logo from "@/app/_components/Logo";
+import { ActiveTeamContext } from "@/app/_context/FilesListContext";
 
 export interface TEAM {
   createdBy: String;
@@ -23,6 +24,7 @@ export interface TEAM {
 }
 
 export interface TeamMember {
+  role: string;
   email: String;
 }
 function SideNavTopSection({ user, setActiveTeamInfo }: any) {
@@ -49,6 +51,8 @@ function SideNavTopSection({ user, setActiveTeamInfo }: any) {
   const router = useRouter();
   const convex = useConvex();
   const [activeTeam, setActiveTeam] = useState<TEAM>();
+  const {activeTeam_, setActiveTeam_} = useContext(ActiveTeamContext);
+
   const [teamList, setTeamList] = useState<TEAM[]>();
   useEffect(() => {
     user && getTeamList();
@@ -64,6 +68,7 @@ function SideNavTopSection({ user, setActiveTeamInfo }: any) {
     console.log("TeamList", result);
     setTeamList(result);
     setActiveTeam(result[0]);
+    setActiveTeam_(result[0])
   };
 
   const onMenuClick = (item: any) => {

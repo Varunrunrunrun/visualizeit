@@ -9,10 +9,12 @@ const Canvas = ({
   onSaveTrigger,
   fileId,
   fileData,
+  userRole
 }: {
   onSaveTrigger: any;
   fileId: any;
   fileData: FILE;
+  userRole:boolean;
 }) => {
   const [whiteBoardData, setWhiteBoardData] = useState<any>();
 
@@ -31,7 +33,8 @@ const Canvas = ({
     }).then((resp) => console.log(resp));
   };
   return (
-    <div style={{ height: "inherit" }}>
+    <div style={{ height: "inherit" }} className={`relative`}>
+      {userRole && <div className="z-50 absolute top-2 left-2 text-[12px] text-red-400">Members don't have edit access(Please contact Team Admin to get edit access)</div>}
       {fileData && (
         <Excalidraw
           theme="light"
@@ -49,6 +52,7 @@ const Canvas = ({
               toggleTheme: false,
             },
           }}
+          viewModeEnabled={userRole}
         >
           <MainMenu>
             <MainMenu.DefaultItems.ClearCanvas />

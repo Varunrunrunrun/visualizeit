@@ -53,6 +53,7 @@ export const createTeam = mutation({
     members: v.array(
       v.object({
         email: v.string(),
+        role: v.optional(v.string()),
       })
     ),
   },
@@ -112,6 +113,7 @@ export const addMembers=mutation({
       members: v.array(
         v.object({
           email: v.string(),
+          role:v.optional(v.string())
         })
       ),
   },
@@ -127,3 +129,12 @@ export const addMembers=mutation({
   },
 })
 
+export const getTeamById = query({
+  args:{
+      _id:v.id('teams')
+  },
+  handler:async(ctx, args)=> {
+      const result=await ctx.db.get(args._id);
+      return result;
+  },
+})

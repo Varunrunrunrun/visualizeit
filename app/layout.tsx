@@ -23,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ConvexClientProvider>
           {children}
-          <Toaster />
+          <Toaster richColors closeButton />
         </ConvexClientProvider>
       </body>
     </html>

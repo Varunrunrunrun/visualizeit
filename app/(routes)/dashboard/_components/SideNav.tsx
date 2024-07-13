@@ -40,7 +40,7 @@ const SideNav = () => {
     useEffect(()=>{
       activeTeam&&getFiles();
       activeTeam && setActiveTeam_(activeTeam)
-
+      console.log("activeTeam_",activeTeam_)
     },[activeTeam])
     const onFileCreate=(fileName:string)=>{
       console.log(fileName)

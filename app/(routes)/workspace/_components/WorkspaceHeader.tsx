@@ -5,7 +5,7 @@ import { Link, LogOut, MoreHorizontal, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const WorkspaceHeader = ({onSave,fileName}:any) => {
+const WorkspaceHeader = ({onSave,fileName,userRole}:any) => {
     const router = useRouter();
   return (
     <div>
@@ -16,9 +16,10 @@ const WorkspaceHeader = ({onSave,fileName}:any) => {
         </div>
         <div className="md:flex items-center gap-4 hidden">
           <Button
-            className="h-8 text-[12px]
-        gap-2 bg-green-500 hover:bg-green-600"
+            className={`h-8 text-[12px]
+        gap-2 bg-green-500 hover:bg-green-600 ${userRole ? ' cursor-not-allowed' :'cursor-pointer'}`}
             onClick={onSave}
+            disabled={userRole}
           > 
             <Save className="h-4 w-4" /> Save{" "}
           </Button>

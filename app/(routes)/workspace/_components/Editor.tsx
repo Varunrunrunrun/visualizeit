@@ -38,7 +38,7 @@ const rawDocument={
     "version" : "2.8.1"
 }
 
-const Editor = ({onSaveTrigger,fileId,fileData}:{onSaveTrigger:any,fileId:any,fileData:FILE}) => {
+const Editor = ({onSaveTrigger,fileId,fileData,userRole}:{onSaveTrigger:any,fileId:any,fileData:FILE,userRole:boolean}) => {
   const {user}:any=useKindeBrowserClient();
     const ref=useRef<EditorJS>();
     const updateDocument=useMutation(api.files.updateDocument);
@@ -112,9 +112,13 @@ const Editor = ({onSaveTrigger,fileId,fileData}:{onSaveTrigger:any,fileId:any,fi
         });
       }
     }
+
+    const handleClick = () => {
+      userRole && toast.error("Members are not allowed to edit the file.")
+    }
   return (
-    <div>
-        <div id='editorjs' className='md:ml-20 ml-2'></div>
+    <div onClick={() => handleClick()}>
+        <div  id='editorjs' className={`md:ml-20 ml-2 ${userRole && ' pointer-events-none'} `}></div>
     </div>
   )
 }

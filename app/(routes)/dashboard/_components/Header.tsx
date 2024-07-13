@@ -21,6 +21,8 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export interface HeaderType {
   searchFn: (value: string) => void; // Updated type definition
@@ -64,7 +66,7 @@ const Header = ({ searchFn }: HeaderType) => {
   const [members, setMembers] = useState<Member[]>([]);
   const addMemberFn = () => {
     if (activeTeam_.createdBy === user?.email) {
-      setMembers([...members, { email: "" }]);
+      setMembers([...members, { email: "", role: "member"}]);
     } else {
       toast("Only Admin can add members");
     }
@@ -75,17 +77,21 @@ const Header = ({ searchFn }: HeaderType) => {
   }, [activeTeam_]);
   console.log(members);
 
-  const updateMember = (e: any, index: number) => {
-    if (activeTeam_.createdBy === user?.email) {
-      const updatedMembers = [...members];
-      updatedMembers[index] = {
-        ...updatedMembers[index],
-        email: e.target.value,
-      };
-      setMembers(updatedMembers);
-    } else {
-      toast("Only Admin can edit member details");
-    }
+  const updateMemberEmail = (e: any, index: number) => {
+    const updatedMembers = [...members];
+    updatedMembers[index] = {
+      ...updatedMembers[index],
+      email: e.target.value,
+    };
+    setMembers(updatedMembers);
+  };
+  const updateMemberRole = (e: any, index: number) => {
+    const updatedMembers = [...members];
+    updatedMembers[index] = {
+      ...updatedMembers[index],
+      role: e,
+    };
+    setMembers(updatedMembers);
   };
 
   const removeMember = (index: number) => {
@@ -119,7 +125,9 @@ const Header = ({ searchFn }: HeaderType) => {
     setTextColor(isDarkColor(randomColor) ? "text-white" : "text-black");
   }, []);
   return (
-    <div className="flex flex-col sm:flex-row justify-end w-full gap-2 items-center">
+    <div className="flex flex-col p-2 sm:p-0 sm:flex-row justify-between  w-full gap-2 items-center">
+      {user && user.given_name && <div className="w-full text-left">Welcome <span className="font-bold capitalize">{user?.given_name} {user?.family_name}</span></div>}
+      <div className="flex gap-2 sm:flex-row flex-col w-full sm:w-fit justify-end">
       <div className="flex gap-2 items-center border rounded-md p-1 w-full sm:w-auto">
         <Search className="h-4 w-4" />
         <input
@@ -162,7 +170,7 @@ const Header = ({ searchFn }: HeaderType) => {
               <Users className="h-4 w-4" /> Members
             </div>
           </DialogTrigger>
-          <DialogContent className="min-w-[300px] md:w-2/5 w-[90%] max-h-[80%] md:p-4 p-2 rounded-sm">
+          <DialogContent className="min-w-[300px] md:w-2/5 w-[90%] max-h-[90%] md:p-4 p-2 rounded-sm">
             <DialogHeader className="w-fit ">
               <DialogTitle className="text-left w-full">Members</DialogTitle>
             </DialogHeader>
@@ -177,30 +185,48 @@ const Header = ({ searchFn }: HeaderType) => {
               <Button onClick={addMemberFn}>Add</Button>
             </div>
             <div className="max-h-[300px] overflow-auto  overflow-x-hidden md:px-4 pb-2">
-              {members &&
-                members.map((item, index) => (
-                  <div
-                    className="mt-2 flex gap-2 items-center w-full min-w-[300px]"
-                    key={index}
-                  >
-                    <Input
-                      placeholder="Email ID"
-                      className="mt-3"
-                      onChange={(e) => updateMember(e, index)}
-                      value={item?.email}
-                    />
-                    <Trash2
-                      className="text-red-400 mt-2 hover:text-red-500"
-                      onClick={() => {
-                        removeMember(index);
-                      }}
-                    />
-                  </div>
-                ))}
+            {members &&
+          members.map((item, index) => (
+            <div
+              className="relative mt-4 flex gap-2 items-start w-full min-w-[300px] border-[1px] p-4 shadow-md rounded-sm"
+              key={index}
+            >
+              <div className="w-full">
+                <div className="my-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    placeholder="Email ID"
+                    className="mt-1"
+                    onChange={(e) => updateMemberEmail(e, index)}
+                    value={item?.email}
+                    name="email"
+                  />
+                </div>
+                <div className="my-2">
+                  <Label htmlFor="role">Role</Label>
+                  <Select value={item.role} name="role" onValueChange={(e) => updateMemberRole(e, index)}>
+                    <SelectTrigger className="w-full mt-1">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="member">Member</SelectItem>
+                      <SelectItem value="co-admin">Co-Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <Trash2
+                className="text-red-400 hover:text-red-500 absolute top-2 right-2"
+                onClick={() => {
+                  removeMember(index);
+                }}
+              />
+            </div>
+          ))}
             </div>
             <div className="w-full flex justify-center">
               <Button
-                className="bg-blue-400  md:mt-9 mt-6  w-[30%] min-w-[300px] hover:bg-blue-600"
+                className="bg-blue-400  mt-6  w-[30%] min-w-[300px] hover:bg-blue-600"
                 onClick={() => addFormFn()}
                 disabled={activeTeam_?.createdBy !== user?.email}
               >
@@ -212,6 +238,7 @@ const Header = ({ searchFn }: HeaderType) => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
       </div>
     </div>
   );

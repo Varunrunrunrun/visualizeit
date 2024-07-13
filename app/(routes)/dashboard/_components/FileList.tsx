@@ -140,7 +140,7 @@ function FileList() {
   return (
     <div>
       <Header searchFn={searchFn} />
-      <div className="flex md:justify-start justify-center items-center gap-4 my-4">
+      <div className="flex sm:justify-start justify-center items-center gap-4 my-4">
         {buttonGroup &&
           fileList &&
           fileList.length > 0 &&
@@ -166,7 +166,7 @@ function FileList() {
         <>
           <div className="mt-10  md:flex hidden w-full">
             <div className="overflow-x-auto w-full">
-              <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+              <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mb-2">
                 <thead className="ltr:text-left rtl:text-right">
                   <tr>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
@@ -194,9 +194,9 @@ function FileList() {
                         <tr
                           key={index}
                           className="odd:bg-gray-50 cursor-pointer"
-                          onClick={() => router.push("/workspace/" + file._id)}
+                          onClick={() => router.push("/workspace/" + file.teamId + "/" + file._id)}
                         >
-                          <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                          <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 max-w-[150px] overflow-hidden text-ellipsis">
                             {file.fileName}
                           </td>
                           <td className="whitespace-nowrap px-4 py-2 text-gray-700">
@@ -212,7 +212,7 @@ function FileList() {
                           <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                             {file.lastUpdatedBy}
                           </td>
-                          <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                          <td className="whitespace-nowrap px-4 py-2 text-gray-700 sticky right-0 bg-white z-10">
                             <DropdownMenu>
                               <DropdownMenuTrigger>
                                 <MoreHorizontal />
@@ -263,9 +263,9 @@ function FileList() {
           <div className="mt-10 md:hidden flex flex-col w-full gap-4">
             {fileList &&
               getFileListToDisplayFn().map((file: FILE, index: number) => (
-                <div key={index} onClick={() => router.push("/workspace/" + file._id) } className="w-full h-[120px] border-2 border-black shadow-lg rounded-md relative py-2 px-4">
+                <div key={index} className="w-full h-[160px] border-2 border-black shadow-lg rounded-md relative py-2 px-4">
                   <div className="w-full flex justify-between items-center gap-2 mb-4">
-                    <h2 className="text-[22px] max-w-[200px] text-ellipsis whitespace-nowrap font-semibold">
+                    <h2 className="text-[22px] max-w-[230px] text-ellipsis whitespace-nowrap overflow-hidden font-semibold">
                       {file?.fileName}
                     </h2>
                     <DropdownMenu>
@@ -304,8 +304,11 @@ function FileList() {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
-                  <h2 className="text-[14px]"><strong>Created At: </strong>{moment(file._creationTime).format("DD MMM YYYY")}</h2>
-                  <h2 className="text-[14px]"><strong>Author: </strong>{file.createdBy}</h2>
+                  <h2 className="text-[14px] my-[2px] w-full overflow-hidden whitespace-nowrap text-ellipsis"><strong>Created At: </strong>{moment(file?._creationTime).format("DD MMM YYYY, HH:mm")}</h2>
+                  <h2 className="text-[14px] my-[2px] w-full overflow-hidden whitespace-nowrap text-ellipsis"><strong>Author: </strong>{file?.createdBy}</h2>
+                  <h2 className="text-[14px] my-[2px] w-full overflow-hidden whitespace-nowrap text-ellipsis"><strong>Edited: </strong>{getTimeAgo(file?.lastUpdateTime)}</h2>
+                  <h2 className="text-[14px] my-[2px] w-full overflow-hidden whitespace-nowrap text-ellipsis"><strong>Author: </strong>{file?.lastUpdatedBy}</h2>
+                  
                 </div>
               ))}
           </div>
