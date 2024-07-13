@@ -26,6 +26,7 @@ import { api } from "@/convex/_generated/api";
 import NoTableData from "./NoTableData";
 import { toast } from "sonner";
 import NoSearchData from "./NoSearchData";
+import { getCurrentFormattedDateTime, getTimeAgo } from "./SideNav";
 
 export interface FILE {
   archive: boolean;
@@ -36,6 +37,8 @@ export interface FILE {
   whiteboard: string;
   _id: string;
   _creationTime: number;
+  lastUpdateTime?:any;
+  lastUpdatedBy?: string;
 }
 function FileList() {
   const { fileList_, setFileList_ } = useContext(FileListContext);
@@ -79,6 +82,8 @@ function FileList() {
       archiveUpdate({
         _id: file?._id,
         archive: !file.archive,
+        lastUpdateTime:getCurrentFormattedDateTime(),
+        lastUpdatedBy:user?.email,
       }).then((resp) => {
         if (resp.status === 200) {
           toast(resp.message);
@@ -168,13 +173,16 @@ function FileList() {
                       File Name
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                      Created At
+                      Created
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                      Created By
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                       Edited
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                      Author
+                      Last Edited By
                     </td>
                   </tr>
                 </thead>
@@ -192,13 +200,17 @@ function FileList() {
                             {file.fileName}
                           </td>
                           <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            {moment(file._creationTime).format("DD MMM YYYY")}{" "}
-                          </td>
-                          <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            {moment(file._creationTime).format("DD MMM YYYY")}
+                            {moment(file._creationTime).format("DD MMM YYYY, HH:mm")}{" "}
                           </td>
                           <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                             {file.createdBy}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                            {/* {moment(file._creationTime).format("DD MMM YYYY")} */}
+                            {getTimeAgo(file?.lastUpdateTime)}
+                          </td>
+                          <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                            {file.lastUpdatedBy}
                           </td>
                           <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                             <DropdownMenu>
@@ -251,7 +263,7 @@ function FileList() {
           <div className="mt-10 md:hidden flex flex-col w-full gap-4">
             {fileList &&
               getFileListToDisplayFn().map((file: FILE, index: number) => (
-                <div onClick={() => router.push("/workspace/" + file._id) } className="w-full h-[120px] border-2 border-black shadow-lg rounded-md relative py-2 px-4">
+                <div key={index} onClick={() => router.push("/workspace/" + file._id) } className="w-full h-[120px] border-2 border-black shadow-lg rounded-md relative py-2 px-4">
                   <div className="w-full flex justify-between items-center gap-2 mb-4">
                     <h2 className="text-[22px] max-w-[200px] text-ellipsis whitespace-nowrap font-semibold">
                       {file?.fileName}

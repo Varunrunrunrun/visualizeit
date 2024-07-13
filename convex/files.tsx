@@ -8,7 +8,9 @@ export const createFile=mutation({
         createdBy:v.string(),
         archive:v.boolean(),
         document:v.string(),
-        whiteboard:v.string()
+        whiteboard:v.string(),
+        lastUpdateTime:v.optional(v.string()),
+        lastUpdatedBy:v.optional(v.string()),
     },
     handler:async(ctx, args) =>{
         const result=await ctx.db.insert('files',args);
@@ -33,10 +35,16 @@ export const getFiles=query({
 export const updateDocument=mutation({
     args:{
         _id:v.id('files'),
-        document:v.string()
+        document:v.string(),
+        lastUpdateTime:v.optional(v.string()),
+        lastUpdatedBy:v.optional(v.string()),
     },
     handler:async(ctx, args) =>{
-        const result =await ctx.db.patch(args._id,{document:args.document});
+        const result =await ctx.db.patch(args._id,{
+          document:args.document,
+          lastUpdatedBy:args.lastUpdatedBy,
+          lastUpdateTime:args.lastUpdateTime
+        });
         return result;
     },
 })
@@ -44,10 +52,16 @@ export const updateDocument=mutation({
 export const updateWhiteboard=mutation({
     args:{
         _id:v.id('files'),
-        whiteboard:v.string()
+        whiteboard:v.string(),
+        lastUpdateTime:v.optional(v.string()),
+        lastUpdatedBy:v.optional(v.string()),
     },
     handler:async(ctx, args) =>{
-        const result =await ctx.db.patch(args._id,{whiteboard:args.whiteboard});
+        const result =await ctx.db.patch(args._id,{
+          whiteboard:args.whiteboard,
+          lastUpdatedBy:args.lastUpdatedBy,
+          lastUpdateTime:args.lastUpdateTime
+        });
         return result;
     },
 })
@@ -92,7 +106,10 @@ export const searchFiles = query({
   });
 
   export const archiveUpdate = mutation({
-    args: { _id: v.id("files"), archive: v.boolean() },
+    args: { _id: v.id("files"),
+       archive: v.boolean(),        
+      lastUpdateTime:v.optional(v.string()),
+      lastUpdatedBy:v.optional(v.string()), },
     handler: async (ctx, args) => {
       const result = await ctx.db.patch(args._id,{archive: args.archive});
       if(args.archive){

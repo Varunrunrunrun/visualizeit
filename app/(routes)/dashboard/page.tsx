@@ -29,7 +29,8 @@ const Dashboard = () => {
       if(!result?.length)
       {
           createUser({
-            name:user.given_name ? user.given_name : "",
+            firstName:user.given_name ? user.given_name : "",
+            lastName:user.family_name ? user.family_name : "",
             email:user.email,
             image:user.picture
           }).then((resp)=>{

@@ -7,7 +7,27 @@ import { useConvex, useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
 import { ActiveTeamContext, FileListContext } from '@/app/_context/FilesListContext';
+import moment from 'moment';
 
+// Function to get the current date and time in the desired format
+export const getCurrentFormattedDateTime = () => {
+  // return moment().format('DD/MM/YYYY, HH:mm:ss');
+  const now = moment();
+  const milliseconds = now.valueOf(); // Unix timestamp in milliseconds
+  const fraction = (now.milliseconds() * 1000).toString().padStart(4, '0'); // Four-digit fraction from milliseconds
+
+  return `${milliseconds}.${fraction}`;
+}
+export const getTimeAgo = (timestamp:any) => {
+  // Extract the Unix timestamp part from the given timestamp
+  const unixTimestamp = timestamp.split('.')[0];
+
+  // Parse the Unix timestamp into a moment object
+  const givenMoment = moment(parseInt(unixTimestamp, 10));
+
+  // Get the relative time from now
+  return givenMoment.fromNow();
+}
 const SideNav = () => {
     const {user}:any=useKindeBrowserClient();
     const createFile=useMutation(api.files.createFile);
@@ -30,7 +50,9 @@ const SideNav = () => {
         createdBy:user?.email,
         archive:false,
         document:'',
-        whiteboard:''
+        whiteboard:'',
+        lastUpdateTime:getCurrentFormattedDateTime(),
+        lastUpdatedBy:user?.email,
       }).then(resp=>{
         if(resp)
         {

@@ -17,7 +17,8 @@ export const getUser=query({
 
 export const createUser=mutation({
     args:{
-        name:v.string(),
+        firstName:v.optional(v.string()),
+        lastName:v.optional(v.string()),
         email:v.string(),
         image:v.string()
     },

@@ -15,6 +15,8 @@ import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner';
 import { FILE } from '../../dashboard/_components/FileList';
+import { getCurrentFormattedDateTime } from '../../dashboard/_components/SideNav';
+import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
 
 const rawDocument={
     "time" : 1550476186479,
@@ -35,7 +37,9 @@ const rawDocument={
     }],
     "version" : "2.8.1"
 }
+
 const Editor = ({onSaveTrigger,fileId,fileData}:{onSaveTrigger:any,fileId:any,fileData:FILE}) => {
+  const {user}:any=useKindeBrowserClient();
     const ref=useRef<EditorJS>();
     const updateDocument=useMutation(api.files.updateDocument);
     const [document,setDocument]=useState(rawDocument);
@@ -93,7 +97,9 @@ const Editor = ({onSaveTrigger,fileId,fileData}:{onSaveTrigger:any,fileId:any,fi
           console.log('Article data: ', outputData);
           updateDocument({
             _id:fileId,
-            document:JSON.stringify(outputData)
+            document:JSON.stringify(outputData),
+            lastUpdateTime:getCurrentFormattedDateTime(),
+            lastUpdatedBy:user?.email,
           }).then(resp=>{
             
               toast('Document Updated!')
