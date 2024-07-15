@@ -15,6 +15,11 @@ export const getUser=query({
     },
 })
 
+export const generateUploadUrl = mutation(async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+});
+  
+
 export const createUser=mutation({
     args:{
         firstName:v.optional(v.string()),
@@ -24,5 +29,18 @@ export const createUser=mutation({
     },
     handler:async(ctx, args)=> {
        return await ctx.db.insert("user",args);
+    },
+})
+
+export const updateUser=mutation({
+    args:{
+        id:v.id('user'),
+        firstName:v.optional(v.string()),
+        lastName:v.optional(v.string()),
+        email:v.optional(v.string()),
+        image:v.optional(v.string())
+    },
+    handler:async(ctx, args)=> {
+       return await ctx.db.patch(args.id,args);
     },
 })
