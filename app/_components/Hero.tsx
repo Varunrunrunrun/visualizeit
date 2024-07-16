@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import { LoginLink } from '@kinde-oss/kinde-auth-nextjs'
 
 const Hero = () => {
     return (
@@ -29,15 +30,14 @@ const Hero = () => {
                     </p>
 
                     <div className="mt-8 flex flex-wrap gap-4 text-center">
-                        <a
-                            href="#"
+                        <div
                             className="block w-full rounded bg-blue-400 px-12 py-3 text-sm font-medium text-white shadow hover:bg-blue-700 focus:outline-none focus:ring active:bg-rose-500 sm:w-auto"
                         >
-                            Get Started
-                        </a>
+                            <LoginLink postLoginRedirectURL='/dashboard'>Get Started</LoginLink>
+                        </div>
 
                         <a
-                            href="#"
+                            href="/getting-started"
                             className="block w-full rounded bg-white px-12 py-3 text-sm font-medium text-blue-400 shadow hover:text-blue-700 focus:outline-none focus:ring active:text-rose-500 sm:w-auto"
                         >
                             Learn More
