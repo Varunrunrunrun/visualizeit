@@ -35,7 +35,7 @@ const Canvas = ({
   return (
     <div style={{ height: "inherit" }} className={`relative`}>
       {userRole && <div className="z-50 absolute top-2 left-2 text-[12px] text-red-400">Members don't have edit access(Please contact Team Admin to get edit access)</div>}
-      {fileData && (
+      {fileData && fileData?.whiteboard && (
         <Excalidraw
           theme="light"
           initialData={{
