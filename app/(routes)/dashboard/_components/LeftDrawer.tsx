@@ -23,7 +23,7 @@ const LeftDrawer = () => {
           </DrawerTrigger>
           <Logo className="text-2xl" />
         </div>
-        <DrawerContent className="h-screen  w-[300px] rounded-none bg-transparent border-none">
+        <DrawerContent className="h-screen  w-[300px] rounded-none bg-transparent border-none outline-none">
           <SideNav />
         </DrawerContent>
       </Drawer>
