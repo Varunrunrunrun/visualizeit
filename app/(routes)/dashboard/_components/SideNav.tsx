@@ -78,7 +78,7 @@ const SideNav = () => {
         flex flex-col bg-slate-100
         '
         >
-          <div className='flex-1 mt-20 md:mt-0'>
+          <div className='flex-1 mt-16 md:mt-0'>
           <SideNavTop user={user} 
           setActiveTeamInfo={(activeTeam:TEAM)=>setActiveTeam(activeTeam)}/>
           </div>
