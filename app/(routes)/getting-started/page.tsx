@@ -6,7 +6,7 @@ const GettingStarted = () => {
   return (
     <div className="bg-slate-100 text-black p-6 sm:p-10 lg:p-16">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl lg:text-5xl font-bold mb-6 text-blue-400 flex gap-4"><span>Getting Started with</span> <span><Logo /></span></h1>
+        <h1 className="md:text-3xl text-2xl lg:text-5xl font-bold mb-6 text-blue-400 flex gap-4"><span>Getting Started with</span> <span><Logo /></span></h1>
         <p className="mb-4">
           Welcome to Visualzeit, your collaborative platform for creating, sharing, and editing documents and diagrams. This guide will help you get started with the essential features of Visualzeit.
         </p>
