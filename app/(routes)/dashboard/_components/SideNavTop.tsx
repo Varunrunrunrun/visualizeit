@@ -44,7 +44,7 @@ function SideNavTopSection({ user, setActiveTeamInfo }: any) {
     {
       id: 3,
       name: "Settings",
-      path: "/settings",
+      path: "",
       icon: Settings,
     },
   ];

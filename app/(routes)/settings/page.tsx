@@ -78,7 +78,6 @@ const Settings = () => {
                         className='mt-1'
                         // onChange={(e) => setTeamId(e.target.value)}
                         name='teamiId'
-                        value={}
                     />
         </div>
       </div>
